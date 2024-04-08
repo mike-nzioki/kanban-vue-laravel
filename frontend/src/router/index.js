@@ -1,6 +1,9 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import LoginView from '../views/LoginView.vue'
+import ProjectView from '../views/ProjectView.vue'
+import DashboardView from '../views/HomeView.vue'
+import KanbanView from '@/components/KanbanComponent.vue'
 
 const routes = [
   {
@@ -12,6 +15,25 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: LoginView
+  },
+  {
+    path: '/',
+    name: 'Dashboard',
+    meta: { requiresAuth: false },
+    component: DashboardView,
+    children: [
+      {
+        path: '/kanban',
+        name: 'Dashboard',
+        meta: { requiresAuth: false },
+        component: KanbanView,
+      },
+      {
+        path: '/projects',
+        name: 'Projects',
+        component: ProjectView
+      },
+    ],
   },
   {
     path: '/about',

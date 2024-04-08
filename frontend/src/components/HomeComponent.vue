@@ -13,7 +13,13 @@
           prepend-icon="mdi-view-dashboard"
           title="Dashboard"
           active-color="primary"
-          to="/"
+          to="/kanban"
+        ></v-list-item>
+        <v-list-item
+          prepend-icon="mdi-book-multiple-outline"
+          title="Projects"
+          active-color="primary"
+          to="/projects"
         ></v-list-item>
       </v-list>
     </v-navigation-drawer>
@@ -44,7 +50,8 @@
   </div>
     </v-app-bar>
     <v-main class="ma-2">
-    <kanban-component></kanban-component>
+      <router-view></router-view>
+      <!-- <kanban-component :mini="drawer"></kanban-component> -->
     </v-main>
   </v-app>
 </template>
