@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\BaseController;
-use App\Http\Controllers\Controller;
-use App\Models\User;
 use Illuminate\Http\Request;
+use App\Models\User;
+use Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
+
 
 class AuthController extends BaseController
 {
@@ -19,7 +19,7 @@ class AuthController extends BaseController
      */
     public function register(Request $request)
     {
-        $validator = Validator::make($request->all, [
+        $validator = Validator::make($request->all(), [
             'name' => 'required',
             'email' => 'required|email',
             'password' => 'required',
@@ -28,7 +28,7 @@ class AuthController extends BaseController
 
         if( $validator->fails() )
         {
-            return $this->errorResponse('Validation error.', $validator->errors());
+            return $this->errorResponse('Validation error.', $validator->errors()->all());
         }
 
         $request['password'] = Hash::make($request->password);
@@ -38,6 +38,12 @@ class AuthController extends BaseController
         return $this->successResponse($success, 'User register successfully.');
     }
 
+    /**
+     * login
+     *
+     * @param Request $request
+     * @return void
+     */
     public function login(Request $request)
     {
         $request['password'] = Hash::make($request->password);

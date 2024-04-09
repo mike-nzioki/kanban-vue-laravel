@@ -34,9 +34,10 @@ class BaseController extends Controller
         $response = [
             'success' => false,
             'message'=> $error,
+            'data' => [],
         ];
 
-        if ( !empty( $errorMessage ) )
+        if ( count($errorMessage) > 0 )
         {
             $reponse['data'] = $errorMessage;
         }
