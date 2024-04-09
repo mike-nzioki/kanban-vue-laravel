@@ -51,7 +51,6 @@
     </v-app-bar>
     <v-main class="ma-2">
       <router-view></router-view>
-      <!-- <kanban-component :mini="drawer"></kanban-component> -->
     </v-main>
   </v-app>
 </template>
