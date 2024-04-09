@@ -5,6 +5,8 @@ use App\Http\Controllers\BaseController;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends BaseController
@@ -29,15 +31,25 @@ class AuthController extends BaseController
             return $this->errorResponse('Validation error.', $validator->errors());
         }
 
-        $request['password'] = bcrypt($request->password);
+        $request['password'] = Hash::make($request->password);
         $user = User::create($request->all());
         $success ['name'] = $user->name;
-        $success ['token'] = $user->createToken('trello')->plainTextToken;
+        $success ['token'] = $user->createToken('apiToken')->plainTextToken;
         return $this->successResponse($success, 'User register successfully.');
     }
 
     public function login(Request $request)
     {
-
+        $request['password'] = Hash::make($request->password);
+        if ( Auth::attempt( [ 'email' => $request->email, 'password' => $request->password]))
+        {
+            $user = Auth::user();
+            $user['token'] = $user->createToken('apiToken')->plainTextToken;
+            return $this->successResponse($user, 'User login successfully.');
+        }
+        else
+        {
+            return $this->errorResponse('Unauthorised.', ['error' => 'Unauthorised.']);
+        }
     }
 }
